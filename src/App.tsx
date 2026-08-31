@@ -31,6 +31,7 @@ export function App({ mode }: AppProps) {
         </section>
         <div id="speaker-script">
           <SpeakerNotes
+            key={chapter.id}
             chapter={chapter}
             nextChapter={nextChapter}
             index={controller.index}
