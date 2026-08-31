@@ -67,9 +67,14 @@ export function SpeakerNotes({
       </section>
 
       <section className="script-block" aria-labelledby="script-title">
-        <span id="script-title">SAY / DO</span>
+        <span id="script-title">VERBATIM SCRIPT · READ NATURALLY</span>
         <ol>
-          {chapter.speakerNotes.map((note) => <li key={note}>{note}</li>)}
+          {chapter.speakerNotes.map((note) => (
+            <li key={note.text} data-kind={note.kind}>
+              <span>{note.kind === "say" ? "SAY" : "DO"}</span>
+              <p>{note.text}</p>
+            </li>
+          ))}
         </ol>
       </section>
 

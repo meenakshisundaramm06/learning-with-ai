@@ -1192,28 +1192,47 @@ a:focus-visible {
 
 .script-block ol {
   display: grid;
-  gap: 17px;
+  gap: 0;
   padding: 0;
   margin: 16px 0 0;
   list-style: none;
-  counter-reset: script-step;
 }
 
 .script-block li {
-  position: relative;
-  padding-left: 44px;
-  color: rgba(248, 247, 243, 0.92);
-  font: 19px/1.43 var(--font-evidence);
-  counter-increment: script-step;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 12px;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.script-block li::before {
-  position: absolute;
-  top: 3px;
-  left: 0;
+.script-block li > span {
+  padding-top: 4px;
+  color: var(--signal);
+  font: 750 9px/1.25 var(--font-utility);
+  letter-spacing: 0.1em;
+}
+
+.script-block li > p {
+  margin: 0;
+  color: rgba(248, 247, 243, 0.94);
+  font: 19px/1.46 var(--font-evidence);
+}
+
+.script-block li[data-kind="do"] {
+  margin: 4px 0;
+  padding: 12px;
+  background: rgba(255, 92, 69, 0.06);
+  border: 1px solid rgba(255, 92, 69, 0.14);
+}
+
+.script-block li[data-kind="do"] > span {
   color: var(--thread);
-  font: 700 10px var(--font-utility);
-  content: counter(script-step, decimal-leading-zero);
+}
+
+.script-block li[data-kind="do"] > p {
+  color: rgba(248, 247, 243, 0.68);
+  font: italic 15px/1.35 var(--font-evidence);
 }
 
 .next-reveal {

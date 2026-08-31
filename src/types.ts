@@ -42,6 +42,11 @@ export type CameraPose = {
   zoom: number;
 };
 
+export type SpeakerNote = {
+  kind: "say" | "do";
+  text: string;
+};
+
 export type Chapter = {
   id: string;
   caseNumber: string;
@@ -52,7 +57,7 @@ export type Chapter = {
   camera: CameraPose;
   boardLine: string;
   deliveryCue: string;
-  speakerNotes: readonly string[];
+  speakerNotes: readonly SpeakerNote[];
   nextReveal: string;
 };
 

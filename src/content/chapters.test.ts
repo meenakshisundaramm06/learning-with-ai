@@ -59,4 +59,24 @@ describe("presentation content", () => {
       expect(representedCases.has(chapter.evidenceCaseIndex ?? -1)).toBe(true);
     });
   });
+
+  it("keeps the speaker script readable and separates spoken lines from directions", () => {
+    chapters.forEach((chapter) => {
+      const spokenNotes = chapter.speakerNotes.filter((note) => note.kind === "say");
+      const directions = chapter.speakerNotes.filter((note) => note.kind === "do");
+
+      expect(spokenNotes.length).toBeGreaterThan(0);
+      expect(directions.length).toBeGreaterThan(0);
+
+      chapter.speakerNotes.forEach((note) => {
+        expect(note.text.trim()).toBe(note.text);
+        expect(note.text.length).toBeGreaterThan(0);
+
+        if (note.kind === "say") {
+          const wordCount = note.text.split(/\s+/).length;
+          expect(wordCount).toBeLessThanOrEqual(80);
+        }
+      });
+    });
+  });
 });
