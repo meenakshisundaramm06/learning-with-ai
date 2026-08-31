@@ -12,6 +12,7 @@ import {
   BOARD_WIDTH,
   evidenceCards,
   getChapter,
+  getChapterIndexForEvidenceCase,
   threadEdges,
 } from "../content/chapters";
 import { getCardCenter } from "../lib/presentation";
@@ -35,8 +36,11 @@ export function EvidenceBoard({
   const animationFrameRef = useRef<number | null>(null);
   const [viewport, setViewport] = useState<ViewportSize>({ width: 1280, height: 800 });
   const chapter = getChapter(activeIndex);
+  const activeEvidenceCaseIndex = chapter.evidenceCaseIndex;
+  const isOverview = activeEvidenceCaseIndex === null;
 
   const focusCard = useMemo(() => {
+    if (chapter.camera.focusCardId === null) return null;
     const found = evidenceCards.find((card) => card.id === chapter.camera.focusCardId);
     if (!found) throw new Error(`Missing focus card: ${chapter.camera.focusCardId}`);
     return found;
@@ -63,17 +67,20 @@ export function EvidenceBoard({
     }
   }, []);
 
-  const focus = getCardCenter(focusCard);
+  const focus = focusCard
+    ? getCardCenter(focusCard)
+    : { x: BOARD_WIDTH / 2, y: BOARD_HEIGHT / 2 };
   const fitScale = Math.min(
     viewport.width / (BOARD_WIDTH + (compact ? 140 : 220)),
     viewport.height / (BOARD_HEIGHT + (compact ? 120 : 190)),
   );
+  const showFullBoard = compact || isOverview;
   const zoom = fitScale * (compact ? 0.9 : chapter.camera.zoom);
   const boardStyle = {
     "--board-width": `${BOARD_WIDTH}px`,
     "--board-height": `${BOARD_HEIGHT}px`,
-    "--camera-x": `${compact ? 0 : BOARD_WIDTH / 2 - focus.x}px`,
-    "--camera-y": `${compact ? 0 : BOARD_HEIGHT / 2 - focus.y}px`,
+    "--camera-x": `${showFullBoard ? 0 : BOARD_WIDTH / 2 - focus.x}px`,
+    "--camera-y": `${showFullBoard ? 0 : BOARD_HEIGHT / 2 - focus.y}px`,
     "--camera-zoom": zoom,
   } as CSSProperties;
 
@@ -103,6 +110,7 @@ export function EvidenceBoard({
       ref={sceneRef}
       className="evidence-scene"
       data-compact={compact}
+      data-overview={isOverview}
       onPointerMove={handlePointerMove}
       onPointerLeave={() => updateTilt(0, 0)}
       aria-label={`Evidence board. Current section: ${chapter.title}`}
@@ -113,14 +121,23 @@ export function EvidenceBoard({
           <div className="board-pan">
             <div className="board-surface">
               <div className="board-grain" aria-hidden="true" />
-              <ThreadMap cards={evidenceCards} edges={threadEdges} activeIndex={activeIndex} />
+              <ThreadMap
+                cards={evidenceCards}
+                edges={threadEdges}
+                activeCaseIndex={activeEvidenceCaseIndex}
+              />
               {evidenceCards.map((card) => (
                 <EvidenceCard
                   key={card.id}
                   card={card}
-                  active={card.caseIndex === activeIndex}
-                  visited={card.caseIndex <= activeIndex}
-                  onSelect={onSelectCase}
+                  active={card.caseIndex === activeEvidenceCaseIndex}
+                  visited={
+                    activeEvidenceCaseIndex !== null &&
+                    card.caseIndex <= activeEvidenceCaseIndex
+                  }
+                  onSelect={(evidenceCaseIndex) => {
+                    onSelectCase(getChapterIndexForEvidenceCase(evidenceCaseIndex));
+                  }}
                 />
               ))}
               <div className="board-stamp" aria-hidden="true">

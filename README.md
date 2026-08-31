@@ -15,7 +15,7 @@ The notes URL is intentionally absent from the public presentation. It is still 
 
 - `ArrowRight`, `Space`, or `PageDown` — next case.
 - `ArrowLeft` or `PageUp` — previous case.
-- `Home` / `End` — first / last case.
+- `Home` / `End` — full-board overview / final case.
 - `F` — toggle fullscreen.
 - Click an evidence card or case marker to jump to it.
 

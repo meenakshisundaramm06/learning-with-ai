@@ -43,7 +43,7 @@ export function PresenterChrome({
           <h1>{chapter.title}</h1>
         </div>
         <div className="timecode">
-          <span>SESSION WINDOW</span>
+          <span>{index === 0 ? "STARTING VIEW" : "SESSION WINDOW"}</span>
           <strong>{chapter.timeRange}</strong>
         </div>
       </header>
@@ -58,11 +58,11 @@ export function PresenterChrome({
             className="case-dot"
             data-active={dotIndex === index}
             data-visited={dotIndex <= index}
-            aria-label={`Go to case ${dotIndex + 1}`}
+            aria-label={dotIndex === 0 ? "Show full board" : `Go to case ${dotIndex}`}
             aria-current={dotIndex === index ? "step" : undefined}
             onClick={() => onSelect(dotIndex)}
           >
-            <span>{(dotIndex + 1).toString().padStart(2, "0")}</span>
+            <span>{dotIndex.toString().padStart(2, "0")}</span>
           </button>
         ))}
       </nav>

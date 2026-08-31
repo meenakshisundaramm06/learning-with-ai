@@ -19,6 +19,7 @@ export function SpeakerNotes({
   onPrevious,
   onNext,
 }: SpeakerNotesProps) {
+  const caseCount = count - 1;
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [running, setRunning] = useState(false);
   const notesRef = useRef<HTMLElement>(null);
@@ -39,9 +40,16 @@ export function SpeakerNotes({
     <aside className="speaker-notes" ref={notesRef} aria-label="Speaker notes">
       <header className="notes-header">
         <div>
-          <span>{chapter.caseNumber} / {count.toString().padStart(2, "0")}</span>
+          <span>
+            {index === 0
+              ? chapter.caseNumber
+              : `${chapter.caseNumber} / ${caseCount.toString().padStart(2, "0")}`}
+          </span>
           <h1>{chapter.title}</h1>
-          <p>{chapter.timeRange} · {chapter.durationMinutes} min</p>
+          <p>
+            {chapter.timeRange}
+            {chapter.durationMinutes > 0 ? ` · ${chapter.durationMinutes} min` : null}
+          </p>
         </div>
         <div className="session-timer" aria-label={`Elapsed session time ${formatElapsed(elapsedSeconds)}`}>
           <span>SESSION</span>
@@ -73,7 +81,7 @@ export function SpeakerNotes({
 
       <nav className="notes-nav" aria-label="Speaker note navigation">
         <button type="button" onClick={onPrevious} disabled={index === 0}>← Previous</button>
-        <span>{index + 1} / {count}</span>
+        <span>{index === 0 ? "Overview" : `${index} / ${caseCount}`}</span>
         <button type="button" onClick={onNext} disabled={index === count - 1}>Next →</button>
       </nav>
     </aside>

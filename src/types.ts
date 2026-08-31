@@ -38,7 +38,7 @@ export type ThreadEdge = {
 };
 
 export type CameraPose = {
-  focusCardId: string;
+  focusCardId: string | null;
   zoom: number;
 };
 
@@ -48,6 +48,7 @@ export type Chapter = {
   title: string;
   timeRange: string;
   durationMinutes: number;
+  evidenceCaseIndex: number | null;
   camera: CameraPose;
   boardLine: string;
   deliveryCue: string;
@@ -56,7 +57,7 @@ export type Chapter = {
 };
 
 export type StoredPresentationState = {
-  version: 1;
+  version: 2;
   index: number;
   updatedAt: number;
 };

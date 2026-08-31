@@ -6,7 +6,7 @@ import { getCardCenter } from "../lib/presentation";
 export type ThreadMapProps = {
   cards: readonly EvidenceCardData[];
   edges: readonly ThreadEdge[];
-  activeIndex: number;
+  activeCaseIndex: number | null;
 };
 
 type ResolvedEdge = ThreadEdge & {
@@ -23,7 +23,7 @@ function buildThreadPath(from: EvidenceCardData, to: EvidenceCardData): string {
   return `M ${start.x} ${start.y} C ${midpointX} ${start.y + bend}, ${midpointX} ${end.y - bend}, ${end.x} ${end.y}`;
 }
 
-export function ThreadMap({ cards, edges, activeIndex }: ThreadMapProps) {
+export function ThreadMap({ cards, edges, activeCaseIndex }: ThreadMapProps) {
   const resolvedEdges = useMemo<readonly ResolvedEdge[]>(() => {
     const cardMap = new Map(cards.map((card) => [card.id, card]));
 
@@ -51,8 +51,9 @@ export function ThreadMap({ cards, edges, activeIndex }: ThreadMapProps) {
         </filter>
       </defs>
       {resolvedEdges.map((edge) => {
-        const reached = edge.toCard.caseIndex <= activeIndex;
-        const current = edge.toCard.caseIndex === activeIndex;
+        const reached =
+          activeCaseIndex !== null && edge.toCard.caseIndex <= activeCaseIndex;
+        const current = edge.toCard.caseIndex === activeCaseIndex;
         return (
           <g
             key={edge.id}

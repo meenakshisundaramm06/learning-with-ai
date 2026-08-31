@@ -5,11 +5,29 @@ export const BOARD_HEIGHT = 1700;
 
 export const chapters: readonly Chapter[] = [
   {
+    id: "overview",
+    caseNumber: "BOARD 00",
+    title: "The learning case",
+    timeRange: "ORIENTATION",
+    durationMinutes: 0,
+    evidenceCaseIndex: null,
+    camera: { focusCardId: null, zoom: 0.94 },
+    boardLine: "Eight clues. One question: how does material become capability?",
+    deliveryCue: "Let the room take in the whole board. Do not explain the individual cards yet.",
+    speakerNotes: [
+      "Open on the complete board and pause. This is the shape of the problem we are investigating together.",
+      "Every card answers part of one question: with more learning material than ever, what actually changes what we can do?",
+      "Tell them the camera will move through the evidence. Then advance into the first case.",
+    ],
+    nextReveal: "Begin with the pile of material.",
+  },
+  {
     id: "material",
     caseNumber: "CASE 01",
     title: "The pile of material",
     timeRange: "00:00–04:00",
     durationMinutes: 4,
+    evidenceCaseIndex: 0,
     camera: { focusCardId: "material-pile", zoom: 1.42 },
     boardLine: "Material is abundant. Capability is not.",
     deliveryCue: "Begin with your own unfinished React attempt. Do not sound like an expert diagnosing the room.",
@@ -28,6 +46,7 @@ export const chapters: readonly Chapter[] = [
     title: "The tutoring opportunity",
     timeRange: "04:00–09:00",
     durationMinutes: 5,
+    evidenceCaseIndex: 1,
     camera: { focusCardId: "bloom-chart", zoom: 1.14 },
     boardLine: "A tutor manages the learning loop—not just the explanation.",
     deliveryCue: "Pause on the graph. State the caveat before making the AI connection.",
@@ -46,6 +65,7 @@ export const chapters: readonly Chapter[] = [
     title: "Support changes with the learner",
     timeRange: "09:00–13:00",
     durationMinutes: 4,
+    evidenceCaseIndex: 2,
     camera: { focusCardId: "talent-stages", zoom: 1.34 },
     boardLine: "Explore. Build. Refine.",
     deliveryCue: "Keep the original sports and mathematics examples. Ask for one silent self-check, not a discussion.",
@@ -64,6 +84,7 @@ export const chapters: readonly Chapter[] = [
     title: "Why large goals overwhelm us",
     timeRange: "13:00–18:00",
     durationMinutes: 5,
+    evidenceCaseIndex: 3,
     camera: { focusCardId: "memory-bottleneck", zoom: 1.16 },
     boardLine: "Keep the ambition. Reduce the height of the next step.",
     deliveryCue: "Let the bottleneck animate before revealing the staircase.",
@@ -82,6 +103,7 @@ export const chapters: readonly Chapter[] = [
     title: "Map the path",
     timeRange: "18:00–24:00",
     durationMinutes: 6,
+    evidenceCaseIndex: 4,
     camera: { focusCardId: "knowledge-graph", zoom: 1.08 },
     boardLine: "Plan backwards. Learn forwards.",
     deliveryCue: "Trace the lit path with the cursor. Make the direction change explicit.",
@@ -100,6 +122,7 @@ export const chapters: readonly Chapter[] = [
     title: "How capability forms",
     timeRange: "24:00–31:00",
     durationMinutes: 7,
+    evidenceCaseIndex: 5,
     camera: { focusCardId: "practice-loop", zoom: 1.05 },
     boardLine: "Attempt → feedback → correction → fresh proof.",
     deliveryCue: "Move through the React example one row at a time. Keep the loop faster than the explanation.",
@@ -119,6 +142,7 @@ export const chapters: readonly Chapter[] = [
     title: "Build your learning frontier",
     timeRange: "31:00–43:00",
     durationMinutes: 12,
+    evidenceCaseIndex: 6,
     camera: { focusCardId: "activity-card", zoom: 1.52 },
     boardLine: "Leave with a next task, not another resource list.",
     deliveryCue: "Protect the full 12 minutes. Announce the remaining time at 6, 3, and 1 minute.",
@@ -138,6 +162,7 @@ export const chapters: readonly Chapter[] = [
     title: "The commitment",
     timeRange: "43:00–45:00",
     durationMinutes: 2,
+    evidenceCaseIndex: 7,
     camera: { focusCardId: "closing-rule", zoom: 1.42 },
     boardLine: "Material becomes capability through evidence of use.",
     deliveryCue: "Slow down. Ask them to calendar the return before you say the final line.",
@@ -157,6 +182,16 @@ export function getChapter(index: number): Chapter {
   const chapter = chapters[index] ?? chapters[0];
   if (!chapter) throw new Error("The presentation must contain at least one chapter.");
   return chapter;
+}
+
+export function getChapterIndexForEvidenceCase(evidenceCaseIndex: number): number {
+  const chapterIndex = chapters.findIndex(
+    (chapter) => chapter.evidenceCaseIndex === evidenceCaseIndex,
+  );
+  if (chapterIndex < 0) {
+    throw new Error(`Missing chapter for evidence case ${evidenceCaseIndex}.`);
+  }
+  return chapterIndex;
 }
 
 export const evidenceCards: readonly EvidenceCardData[] = [

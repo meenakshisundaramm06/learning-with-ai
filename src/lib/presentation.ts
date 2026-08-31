@@ -3,7 +3,7 @@ import type {
   StoredPresentationState,
 } from "../types";
 
-export const PRESENTATION_STATE_KEY = "learning-evidence-board:v1";
+export const PRESENTATION_STATE_KEY = "learning-evidence-board:v2";
 export const PRESENTATION_CHANNEL = "learning-evidence-board";
 
 export function clampIndex(index: number, chapterCount: number): number {
@@ -34,7 +34,7 @@ export function isStoredPresentationState(
 
   const record = value as Record<string, unknown>;
   return (
-    record.version === 1 &&
+    record.version === 2 &&
     typeof record.index === "number" &&
     Number.isInteger(record.index) &&
     typeof record.updatedAt === "number" &&
@@ -43,7 +43,7 @@ export function isStoredPresentationState(
 }
 
 export function createStoredState(index: number): StoredPresentationState {
-  return { version: 1, index, updatedAt: Date.now() };
+  return { version: 2, index, updatedAt: Date.now() };
 }
 
 export function getCardCenter(card: EvidenceCardData): {
