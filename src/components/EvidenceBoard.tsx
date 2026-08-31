@@ -27,6 +27,9 @@ export type EvidenceBoardProps = {
 
 type ViewportSize = { width: number; height: number };
 
+const FOCUS_READABILITY_BOOST = 1.2;
+const MAX_FOCUS_ZOOM = 1.8;
+
 export function EvidenceBoard({
   activeIndex,
   onSelectCase,
@@ -75,7 +78,13 @@ export function EvidenceBoard({
     viewport.height / (BOARD_HEIGHT + (compact ? 120 : 190)),
   );
   const showFullBoard = compact || isOverview;
-  const zoom = fitScale * (compact ? 0.9 : chapter.camera.zoom);
+  const focusZoom = Math.min(
+    chapter.camera.zoom * FOCUS_READABILITY_BOOST,
+    MAX_FOCUS_ZOOM,
+  );
+  const zoom = fitScale * (
+    compact ? 0.9 : isOverview ? chapter.camera.zoom : focusZoom
+  );
   const boardStyle = {
     "--board-width": `${BOARD_WIDTH}px`,
     "--board-height": `${BOARD_HEIGHT}px`,
