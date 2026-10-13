@@ -34,6 +34,10 @@ npm run check
 
 Build output is written to `dist/` and contains both HTML entry points.
 
+## GitHub Pages
+
+`.github/workflows/deploy-pages.yml` runs `npm run check` and publishes `dist/` on every push to `main`. On a public repo the site and the `/notes/` page are both public.
+
 ## GitLab Pages
 
 The included `.gitlab-ci.yml` verifies every branch and deploys `dist/` from the default branch using `pages.publish`.
